@@ -1,0 +1,6 @@
+{
+  "extends": "@rs-stack/tsconfig/tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["node", "vite/client"]
+  }
+}

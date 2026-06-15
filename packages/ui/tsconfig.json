@@ -1,0 +1,10 @@
+{
+  "extends": "@rs-stack/tsconfig/tsconfig.base.json",
+  "compilerOptions": {
+    "paths": {
+      "@rs-stack/ui/*": ["./*"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
+}
