@@ -1,0 +1,3 @@
+{
+  "extends": "@rs-stack/tsconfig/tsconfig.base.json"
+}

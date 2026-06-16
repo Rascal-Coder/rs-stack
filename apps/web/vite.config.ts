@@ -10,6 +10,7 @@ import viteReact, { reactCompilerPreset } from "@vitejs/plugin-react";
 import { nitro } from "nitro/vite";
 import { defineConfig } from "vite-plus";
 
+import { ENV_WEB_ISOMORPHIC } from "@rs-stack/env/web/env.isomorphic";
 import { ENV_WEB_SERVER } from "@rs-stack/env/web/env.server";
 import { locales } from "@rs-stack/i18n/runtime";
 import { paraglideVitePlugin } from "@rs-stack/i18n/vite/plugin";
@@ -29,7 +30,7 @@ const ROUTES_TO_PRERENDER: FileRouteTypes["fullPaths"][] = [
 ];
 
 /** App is served under this path prefix (not a full URL — nitro treats `:port` as a route param). */
-const WEB_BASE_PATH = "/web";
+// const WEB_BASE_PATH = "/web";
 
 const PAGES_PRERENDER_CONFIG = [
   // Also prerender the default locale without the locale prefix
@@ -80,7 +81,7 @@ export default defineConfig({
   preview: {
     host: "127.0.0.1"
   },
-  base: WEB_BASE_PATH,
+  base: new URL(ENV_WEB_ISOMORPHIC.VITE_WEB_URL).pathname,
   // base: new URL(ENV_WEB_ISOMORPHIC.VITE_WEB_URL).pathname,
   // Restart the dev server when env files in this directory change
   envDir: resolve(import.meta.dirname, "../../packages/env"),
@@ -92,7 +93,7 @@ export default defineConfig({
     __BUILD_SOURCE_COMMIT__: JSON.stringify(ENV_WEB_SERVER.SOURCE_COMMIT)
   },
   server: {
-    port: 3000
+    port: Number(new URL(ENV_WEB_ISOMORPHIC.VITE_WEB_URL).port) || 8888
   },
   plugins: [
     devtools({
@@ -121,11 +122,11 @@ export default defineConfig({
       presets: [reactCompilerPreset()]
     }),
     paraglideVitePlugin({
-      basePath: WEB_BASE_PATH
+      basePath: new URL(ENV_WEB_ISOMORPHIC.VITE_WEB_URL).pathname
     }),
     /** @see {@link https://tanstack.com/start/latest/docs/framework/react/guide/hosting} */
     nitro({
-      baseURL: WEB_BASE_PATH,
+      baseURL: new URL(ENV_WEB_ISOMORPHIC.VITE_WEB_URL).pathname,
       /**
        * We need to add this or else we will get `Error: Cannot find module 'react'` during prod.
        * FIXME: I haven't found a fix or related issue yet, but this is where I got the idea to trace the deps:
