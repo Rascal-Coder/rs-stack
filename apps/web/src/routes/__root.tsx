@@ -16,6 +16,7 @@ import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { getLocale } from "@rs-stack/i18n/runtime";
 import { Toaster } from "@rs-stack/ui/components/sonner";
 
+import { ProgressProvider } from "@/shared/providers/progress.provider";
 import appCss from "@/shared/styles/app.css?url";
 
 import { DefaultErrorPage } from "@/pages/default-error";
@@ -96,23 +97,26 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        {children}
-        <Toaster richColors />
-        <TanStackDevtools
-          plugins={[
-            {
-              name: "TanStack Query",
-              render: <ReactQueryDevtoolsPanel />
-            },
-            {
-              name: "TanStack Router",
-              render: <TanStackRouterDevtoolsPanel />
-            },
-            formDevtoolsPlugin(),
-            a11yDevtoolsPlugin()
-          ]}
-        />
-        <Scripts />
+        <ProgressProvider>
+          {children}
+
+          <Toaster richColors />
+          <TanStackDevtools
+            plugins={[
+              {
+                name: "TanStack Query",
+                render: <ReactQueryDevtoolsPanel />
+              },
+              {
+                name: "TanStack Router",
+                render: <TanStackRouterDevtoolsPanel />
+              },
+              formDevtoolsPlugin(),
+              a11yDevtoolsPlugin()
+            ]}
+          />
+          <Scripts />
+        </ProgressProvider>
       </body>
     </html>
   );

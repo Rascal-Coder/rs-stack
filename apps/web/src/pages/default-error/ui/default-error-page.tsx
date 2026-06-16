@@ -3,6 +3,7 @@ import { useEffect } from "react";
 
 import { m } from "@rs-stack/i18n/messages";
 import { Link } from "@rs-stack/i18n/tanstack-start/components/link";
+import { log } from "@rs-stack/logger/client";
 import { Button } from "@rs-stack/ui/components/button";
 import {
   Empty,
@@ -14,7 +15,27 @@ import {
 
 import { CenteredLayout } from "@/widgets/layouts";
 
-export function DefaultErrorPage({ reset }: { reset: () => void }) {
+const loggedErrorKeys = new Set<string>();
+export function DefaultErrorPage({ error, reset }: { error: Error; reset: () => void }) {
+  useEffect(() => {
+    const errorKey = `${error.name}:${error.message}:${error.stack ?? ""}`;
+
+    if (loggedErrorKeys.has(errorKey)) {
+      return;
+    }
+
+    loggedErrorKeys.add(errorKey);
+
+    log.error({
+      action: "global_error_boundary",
+      error: {
+        message: error.message,
+        name: error.name,
+        stack: error.stack
+      }
+    });
+  }, [error]);
+
   const handleRefresh = () => {
     reset();
   };

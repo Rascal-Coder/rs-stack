@@ -19,6 +19,7 @@
     "@paper-design/shaders-react": "catalog:",
     "@rs-stack/env": "workspace:*",
     "@rs-stack/i18n": "workspace:*",
+    "@rs-stack/logger": "workspace:*",
     "@rs-stack/ui": "workspace:*",
     "@tanstack/react-form": "catalog:",
     "@tanstack/react-query": "catalog:",

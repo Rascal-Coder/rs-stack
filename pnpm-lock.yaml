@@ -476,6 +476,9 @@ importers:
       '@rs-stack/i18n':
         specifier: workspace:*
         version: link:../../packages/i18n
+      '@rs-stack/logger':
+        specifier: workspace:*
+        version: link:../../packages/logger
       '@rs-stack/ui':
         specifier: workspace:*
         version: link:../../packages/ui
